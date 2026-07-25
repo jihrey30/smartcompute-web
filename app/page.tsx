@@ -21,6 +21,8 @@ export default function Dashboard() {
           // Prisma doesn't include relations by default unless told to in the backend. 
           // If items are missing, we should ensure the backend is returning them, but for now we'll set it.
           setPayPeriod(firstPeriod);
+        } else {
+          setPayPeriod(null);
         }
       } catch (error) {
         console.error("Failed to load dashboard data", error);
@@ -56,13 +58,51 @@ export default function Dashboard() {
 
   if (loading) {
     return (
-      <div className="flex h-full items-center justify-center">
+      <div className="flex h-full items-center justify-center min-h-[50vh]">
         <Loader2 className="w-8 h-8 animate-spin text-primary" />
       </div>
     );
   }
 
-  // Fallback data if no pay period exists yet
+  async function handleCreatePayPeriod() {
+    try {
+      // Create a dummy user if needed, or assume a user exists for now.
+      // In a real app, you'd pull the logged-in user's ID. 
+      // For this local demo, we fetch the first user in the DB.
+      const users = await api.get('/users');
+      let userId = users.data[0]?.id;
+      if (!userId) {
+        alert("No users found in database! Please run the seed command.");
+        return;
+      }
+
+      await api.post('/pay-periods', {
+        label: "Current Period",
+        payDate: new Date().toISOString(),
+        totalAllocated: 0,
+        totalIncome: 0,
+        totalBalance: 0,
+        userId: userId,
+      });
+      loadDashboard();
+    } catch (error) {
+      console.error("Failed to create pay period", error);
+    }
+  }
+
+  if (!payPeriod) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[60vh] text-center space-y-4 animate-in fade-in">
+        <Wallet className="w-16 h-16 text-primary/50" />
+        <h2 className="text-2xl font-bold">No Active Pay Period</h2>
+        <p className="text-foreground/60 max-w-md">You need to start a new pay period before you can add budget items.</p>
+        <button onClick={handleCreatePayPeriod} className="bg-primary hover:bg-primary-hover text-primary-foreground px-6 py-3 rounded-lg font-medium transition-colors hover-lift">
+          Start New Pay Period
+        </button>
+      </div>
+    );
+  }
+
   const displayData = payPeriod || {
     totalIncome: 0,
     totalAllocated: 0,
