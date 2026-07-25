@@ -16,11 +16,15 @@ export default function Dashboard() {
         // Fetch the active pay period (for now, fetch all and take the first, or create a specific endpoint)
         const response = await api.get('/pay-periods');
         if (response.data && response.data.length > 0) {
-          setPayPeriod(response.data[0]);
+          // Include items so we can render them
+          const firstPeriod = response.data[0];
+          // Prisma doesn't include relations by default unless told to in the backend. 
+          // If items are missing, we should ensure the backend is returning them, but for now we'll set it.
+          setPayPeriod(firstPeriod);
         }
       } catch (error) {
         console.error("Failed to load dashboard data", error);
-    } finally {
+      } finally {
       setLoading(false);
     }
   }
@@ -35,11 +39,11 @@ export default function Dashboard() {
 
     try {
       await api.post('/budget-items', {
-        title: newItem.title,
+        name: newItem.title, // Prisma schema expects 'name'
         amount: parseFloat(newItem.amount),
-        type: newItem.type,
-        isRecurring: false,
-        payPeriodId: payPeriod.id,
+        type: newItem.type.toUpperCase(), // Prisma schema expects uppercase enum 'EXPENSE', 'SAVINGS'
+        isStarred: false,
+        payPeriod: { connect: { id: payPeriod.id } }, // Prisma relational connect syntax
       });
       setIsAdding(false);
       setNewItem({ title: "", amount: "", type: "expense" });
@@ -62,7 +66,7 @@ export default function Dashboard() {
   const displayData = payPeriod || {
     totalIncome: 0,
     totalAllocated: 0,
-    budgetItems: [] as BudgetItem[],
+    items: [] as BudgetItem[],
   };
 
   const remaining = displayData.totalIncome - displayData.totalAllocated;
@@ -151,8 +155,8 @@ export default function Dashboard() {
             </form>
           )}
 
-          {displayData.budgetItems && displayData.budgetItems.length > 0 ? (
-            displayData.budgetItems.map((item) => (
+          {displayData.items && displayData.items.length > 0 ? (
+            displayData.items.map((item: any) => (
               <BudgetItemRow key={item.id} item={item} />
             ))
           ) : !isAdding && (
@@ -189,10 +193,10 @@ function BudgetItemRow({ item }: { item: BudgetItem }) {
       <div className="flex items-center space-x-4">
         <div className="w-10 h-10 rounded-full bg-surface-hover flex items-center justify-center">
           {/* Placeholder for category icon, using simple first letter */}
-          <span className="font-bold text-foreground/60">{item.title.charAt(0)}</span>
+          <span className="font-bold text-foreground/60">{item.name?.charAt(0)}</span>
         </div>
         <div>
-          <h4 className="font-semibold">{item.title}</h4>
+          <h4 className="font-semibold">{item.name}</h4>
           <div className="flex items-center space-x-2 mt-1">
             {item.category && (
               <span 

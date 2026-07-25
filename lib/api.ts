@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Interfaces for our API resources
 export interface Category {
-  id: number;
+  id: string;
   name: string;
   color: string;
   createdAt: string;
@@ -10,37 +10,39 @@ export interface Category {
 }
 
 export interface BudgetItem {
-  id: number;
-  title: string;
+  id: string;
+  name: string;
   amount: number;
   type: string;
-  isRecurring: boolean;
-  categoryId: number | null;
-  payPeriodId: number | null;
+  isStarred: boolean;
+  status: string;
+  categoryId: string | null;
+  payPeriodId: string;
   createdAt: string;
   updatedAt: string;
   category?: Category;
 }
 
 export interface PayPeriod {
-  id: number;
-  startDate: string;
-  endDate: string;
+  id: string;
+  label: string;
+  payDate: string;
   totalIncome: number;
   totalAllocated: number;
-  userId: number;
+  totalBalance: number;
+  userId: string;
   createdAt: string;
   updatedAt: string;
-  budgetItems?: BudgetItem[];
+  items?: BudgetItem[];
 }
 
 export interface BudgetItemTemplate {
-  id: number;
-  title: string;
+  id: string;
+  name: string;
   amount: number;
   type: string;
-  categoryId: number | null;
-  userId: number;
+  categoryId: string | null;
+  userId: string;
   createdAt: string;
   updatedAt: string;
   category?: Category;
