@@ -51,7 +51,7 @@ export interface BudgetItemTemplate {
 // Create an Axios instance
 // In production, this would point to the deployed Render backend URL.
 // Since the frontend runs in browser, we can use an environment variable.
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api/';
 
 export const api = axios.create({
   baseURL: API_URL,

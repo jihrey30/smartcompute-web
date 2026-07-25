@@ -14,7 +14,7 @@ export default function Dashboard() {
   async function loadDashboard() {
     try {
         // Fetch the active pay period (for now, fetch all and take the first, or create a specific endpoint)
-        const response = await api.get('/pay-periods');
+        const response = await api.get('pay-periods');
         if (response.data && response.data.length > 0) {
           // Include items so we can render them
           const firstPeriod = response.data[0];
@@ -40,7 +40,7 @@ export default function Dashboard() {
     if (!newItem.title || !newItem.amount || !payPeriod) return;
 
     try {
-      await api.post('/budget-items', {
+      await api.post('budget-items', {
         name: newItem.title, // Prisma schema expects 'name'
         amount: parseFloat(newItem.amount),
         type: newItem.type.toUpperCase(), // Prisma schema expects uppercase enum 'EXPENSE', 'SAVINGS'
@@ -69,14 +69,14 @@ export default function Dashboard() {
       // Create a dummy user if needed, or assume a user exists for now.
       // In a real app, you'd pull the logged-in user's ID. 
       // For this local demo, we fetch the first user in the DB.
-      const users = await api.get('/users');
+      const users = await api.get('users');
       let userId = users.data[0]?.id;
       if (!userId) {
         alert("No users found in database! Please run the seed command.");
         return;
       }
 
-      await api.post('/pay-periods', {
+      await api.post('pay-periods', {
         label: "Current Period",
         payDate: new Date().toISOString(),
         totalAllocated: 0,

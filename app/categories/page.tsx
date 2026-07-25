@@ -11,7 +11,7 @@ export default function CategoriesPage() {
   useEffect(() => {
     async function loadCategories() {
       try {
-        const response = await api.get('/categories');
+        const response = await api.get('categories');
         setCategories(response.data);
       } catch (error) {
         console.error("Failed to load categories", error);

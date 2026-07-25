@@ -11,7 +11,7 @@ export default function TemplatesPage() {
   useEffect(() => {
     async function loadTemplates() {
       try {
-        const response = await api.get('/templates');
+        const response = await api.get('templates');
         setTemplates(response.data);
       } catch (error) {
         console.error("Failed to load templates", error);
