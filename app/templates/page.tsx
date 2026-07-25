@@ -72,7 +72,7 @@ function TemplateRow({ template }: { template: BudgetItemTemplate }) {
     <div className="flex items-center justify-between p-4 bg-surface rounded-lg border border-surface-border hover-lift group">
       <div className="flex items-center space-x-4">
         <div>
-          <h4 className="font-semibold">{template.title}</h4>
+          <h4 className="font-semibold">{template.name}</h4>
           <div className="flex items-center space-x-2 mt-1">
             {template.category && (
               <span 
