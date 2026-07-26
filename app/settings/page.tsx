@@ -298,7 +298,7 @@ export default function SettingsPage() {
             </div>
           </section>
 
-          <section className="glass-panel p-6 flex flex-col relative z-0">
+          <section className="glass-panel p-6 flex-col relative z-0 flex md:hidden">
             <div className="flex items-center space-x-3 mb-6">
               <div className="p-2 bg-danger/10 text-danger rounded-lg">
                 <LogOut className="w-5 h-5" />
