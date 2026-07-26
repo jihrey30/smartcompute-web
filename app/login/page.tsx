@@ -21,8 +21,9 @@ export default function LoginPage() {
     try {
       const response = await api.post('/auth/login', { email, password });
       login(response.data.access_token, response.data.user);
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Failed to login');
+    } catch (err) {
+      const axiosError = err as { response?: { data?: { message?: string } } };
+      setError(axiosError.response?.data?.message || 'Failed to login');
     } finally {
       setIsLoading(false);
     }
@@ -84,7 +85,7 @@ export default function LoginPage() {
         </form>
 
         <div className="mt-8 text-center text-sm text-muted-foreground">
-          Don't have an account?{' '}
+          Don&apos;t have an account?{' '}
           <Link href="/signup" className="text-primary hover:text-primary/80 font-medium transition-colors">
             Sign up
           </Link>

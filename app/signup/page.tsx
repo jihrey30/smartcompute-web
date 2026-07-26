@@ -23,8 +23,9 @@ export default function SignupPage() {
       await api.post('/auth/register', { email, passwordHash: password, name });
       // Redirect to login after successful signup
       router.push('/login');
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Failed to create account');
+    } catch (err) {
+      const axiosError = err as { response?: { data?: { message?: string } } };
+      setError(axiosError.response?.data?.message || 'Failed to create account');
     } finally {
       setIsLoading(false);
     }

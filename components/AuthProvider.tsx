@@ -30,19 +30,24 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
 
   useEffect(() => {
-    // Check for token on mount
-    const token = Cookies.get('access_token');
-    const storedUser = localStorage.getItem('user');
-    
-    if (token && storedUser) {
-      try {
-        setUser(JSON.parse(storedUser));
-      } catch (e) {
-        console.error('Failed to parse user', e);
+    const initAuth = () => {
+      const token = Cookies.get('access_token');
+      const storedUser = localStorage.getItem('user');
+      
+      let parsedUser = null;
+      if (token && storedUser) {
+        try {
+          parsedUser = JSON.parse(storedUser);
+        } catch (e) {
+          console.error('Failed to parse user', e);
+        }
       }
-    }
-    
-    setIsLoading(false);
+      
+      setUser(parsedUser);
+      setIsLoading(false);
+    };
+
+    initAuth();
   }, []);
 
   useEffect(() => {
