@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
-import { Settings, Save, Loader2, Paintbrush, Calendar, LogOut } from "lucide-react";
+import { Settings, Save, Loader2, Paintbrush, Calendar, LogOut, MousePointerClick } from "lucide-react";
 import { Dropdown } from "@/components/ui/Dropdown";
 import { useUI } from "@/components/ui/UIProvider";
 import { ActionButton } from "@/components/ui/ActionButton";
@@ -160,7 +160,7 @@ export default function SettingsPage() {
           </div>
         </section>
         
-        <section className="glass-panel p-6 flex flex-col h-full relative z-10">
+        <section className="glass-panel p-6 flex flex-col relative z-10">
           <div className="flex items-center space-x-3 mb-6">
             <div className="p-2 bg-primary/10 text-primary rounded-lg">
               <Paintbrush className="w-5 h-5" />
@@ -211,16 +211,33 @@ export default function SettingsPage() {
                     { value: "GBP", label: "British Pound (£)" },
                   ]}
                 />
-                <ActionButton 
-                  type="button" 
-                  icon={Save} 
-                  label="Save" 
-                  variant="ghost" 
-                  onClick={() => setCurrency(localCurrency)} 
-                />
               </div>
             </div>
 
+            <div className="pt-4 mt-auto">
+              <ActionButton 
+                icon={Save} 
+                label="Save Changes" 
+                variant="primary" 
+                onClick={() => setCurrency(localCurrency)} 
+                className="w-full"
+              />
+            </div>
+          </div>
+        </section>
+
+        <section className="glass-panel p-6 flex flex-col relative z-0">
+          <div className="flex items-center space-x-3 mb-6">
+            <div className="p-2 bg-primary/10 text-primary rounded-lg">
+              <MousePointerClick className="w-5 h-5" />
+            </div>
+            <div>
+              <h2 className="text-xl font-semibold">UI Preferences</h2>
+              <p className="text-sm text-foreground/60">Customize your interactions</p>
+            </div>
+          </div>
+
+          <div className="space-y-8 flex-1">
             <div className="space-y-2">
               <label className="text-sm font-medium text-foreground/70 flex flex-col">
                 <span>Action Button Style</span>
@@ -261,20 +278,22 @@ export default function SettingsPage() {
                   </div>
                 </button>
               </div>
-              <div className="flex justify-end pt-2">
-                <ActionButton 
-                  type="button" 
-                  icon={Save} 
-                  label="Save Style" 
-                  variant="primary" 
-                  onClick={() => setButtonStyle(localButtonStyle)} 
-                />
-              </div>
+            </div>
+            
+            <div className="pt-4 mt-auto">
+              <ActionButton 
+                type="button" 
+                icon={Save} 
+                label="Save Style" 
+                variant="primary" 
+                onClick={() => setButtonStyle(localButtonStyle)}
+                className="w-full"
+              />
             </div>
           </div>
         </section>
         
-        <section className="glass-panel p-6 flex flex-col h-full relative z-0">
+        <section className="glass-panel p-6 flex flex-col relative z-0">
           <div className="flex items-center space-x-3 mb-6">
             <div className="p-2 bg-danger/10 text-danger rounded-lg">
               <LogOut className="w-5 h-5" />
