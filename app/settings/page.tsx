@@ -22,6 +22,7 @@ export default function SettingsPage() {
   });
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
     async function loadSettings() {
       try {
@@ -38,7 +39,7 @@ export default function SettingsPage() {
     loadSettings();
   }, []);
 
-  async function handleSaveField(fieldName: string) {
+  async function handleSaveField() {
     setSaving(true);
     try {
       await api.post('pay-schedule', schedule);
@@ -96,7 +97,7 @@ export default function SettingsPage() {
                     { value: "SEMI_MONTHLY", label: "Semi-Monthly (e.g. 15th and 30th)" }
                   ]}
                 />
-                <ActionButton icon={Save} label="Save" variant="ghost" onClick={() => handleSaveField('frequency')} disabled={saving} />
+                <ActionButton icon={Save} label="Save" variant="ghost" onClick={() => handleSaveField()} disabled={saving} />
               </div>
             </div>
 
@@ -107,11 +108,11 @@ export default function SettingsPage() {
                   <input 
                     type="number" 
                     min="1" max="31"
-                    value={schedule.payDays[0] || 1}
+                    value={schedule.payDays?.[0] || 1}
                     onChange={(e) => setSchedule({...schedule, payDays: [parseInt(e.target.value, 10)]})}
                     className="w-full bg-background border border-surface-border rounded-md px-3 py-2 focus:outline-none focus:border-primary"
                   />
-                  <ActionButton icon={Save} label="Save" variant="ghost" onClick={() => handleSaveField('monthly_date')} disabled={saving} />
+                  <ActionButton icon={Save} label="Save" variant="ghost" onClick={() => handleSaveField()} disabled={saving} />
                 </div>
                 <p className="text-xs text-foreground/60">Enter the day of the month you get paid.</p>
               </div>
@@ -125,11 +126,11 @@ export default function SettingsPage() {
                     <input 
                       type="number" 
                       min="1" max="31"
-                      value={schedule.payDays[0] || 15}
-                      onChange={(e) => setSchedule({...schedule, payDays: [parseInt(e.target.value, 10), schedule.payDays[1] || 30]})}
+                      value={schedule.payDays?.[0] || 15}
+                      onChange={(e) => setSchedule({...schedule, payDays: [parseInt(e.target.value, 10), schedule.payDays?.[1] || 30]})}
                       className="w-full bg-background border border-surface-border rounded-md px-3 py-2 focus:outline-none focus:border-primary"
                     />
-                    <ActionButton icon={Save} label="Save" variant="ghost" onClick={() => handleSaveField('first_date')} disabled={saving} />
+                    <ActionButton icon={Save} label="Save" variant="ghost" onClick={() => handleSaveField()} disabled={saving} />
                   </div>
                 </div>
                 <div className="flex-1 space-y-2">
@@ -138,11 +139,11 @@ export default function SettingsPage() {
                     <input 
                       type="number" 
                       min="1" max="31"
-                      value={schedule.payDays[1] || 30}
-                      onChange={(e) => setSchedule({...schedule, payDays: [schedule.payDays[0] || 15, parseInt(e.target.value, 10)]})}
+                      value={schedule.payDays?.[1] || 30}
+                      onChange={(e) => setSchedule({...schedule, payDays: [schedule.payDays?.[0] || 15, parseInt(e.target.value, 10)]})}
                       className="w-full bg-background border border-surface-border rounded-md px-3 py-2 focus:outline-none focus:border-primary"
                     />
-                    <ActionButton icon={Save} label="Save" variant="ghost" onClick={() => handleSaveField('second_date')} disabled={saving} />
+                    <ActionButton icon={Save} label="Save" variant="ghost" onClick={() => handleSaveField()} disabled={saving} />
                   </div>
                 </div>
               </div>
