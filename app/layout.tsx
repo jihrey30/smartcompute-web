@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   description: "A premium, intelligent budgeting application for managing pay periods, categories, and automated templates.",
 };
 
-import { Sidebar } from "@/components/Sidebar";
+import { LayoutWrapper } from "@/components/LayoutWrapper";
 
 export default function RootLayout({
   children,
@@ -25,12 +25,9 @@ export default function RootLayout({
       className={`${inter.variable} h-full antialiased dark`}
     >
       <body className="min-h-full flex flex-col bg-background text-foreground">
-        <div className="flex h-screen overflow-hidden">
-          <Sidebar />
-          <main className="flex-1 overflow-y-auto p-8 lg:p-12">
-            {children}
-          </main>
-        </div>
+        <LayoutWrapper>
+          {children}
+        </LayoutWrapper>
       </body>
     </html>
   );

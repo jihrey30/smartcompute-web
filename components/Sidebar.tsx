@@ -1,7 +1,11 @@
+'use client';
+
 import Link from "next/link";
-import { LayoutDashboard, Tags, CalendarClock, Settings } from "lucide-react";
+import { LayoutDashboard, Tags, CalendarClock, Settings, LogOut } from "lucide-react";
+import { useAuth } from "./AuthProvider";
 
 export function Sidebar() {
+  const { logout } = useAuth();
   return (
     <aside className="w-64 border-r border-surface-border bg-surface flex flex-col hidden md:flex">
       <div className="h-20 flex items-center px-8 border-b border-surface-border">
@@ -30,6 +34,10 @@ export function Sidebar() {
           <Settings className="w-5 h-5" />
           <span>Settings</span>
         </Link>
+        <button onClick={logout} className="w-full mt-2 flex items-center space-x-3 px-4 py-3 rounded-lg text-destructive/70 hover:bg-destructive/10 hover:text-destructive transition-colors hover-lift">
+          <LogOut className="w-5 h-5" />
+          <span>Logout</span>
+        </button>
       </div>
     </aside>
   );

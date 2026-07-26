@@ -32,6 +32,7 @@ export default function Dashboard() {
   }
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     loadDashboard();
   }, []);
 
@@ -70,7 +71,7 @@ export default function Dashboard() {
       // In a real app, you'd pull the logged-in user's ID. 
       // For this local demo, we fetch the first user in the DB.
       const users = await api.get('users');
-      let userId = users.data[0]?.id;
+      const userId = users.data[0]?.id;
       if (!userId) {
         alert("No users found in database! Please run the seed command.");
         return;
@@ -196,7 +197,7 @@ export default function Dashboard() {
           )}
 
           {displayData.items && displayData.items.length > 0 ? (
-            displayData.items.map((item: any) => (
+            displayData.items.map((item: BudgetItem) => (
               <BudgetItemRow key={item.id} item={item} />
             ))
           ) : !isAdding && (

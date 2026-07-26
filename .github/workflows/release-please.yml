@@ -1,0 +1,20 @@
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  pull-requests: write
+
+name: release-please
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: googleapis/release-please-action@v4
+        with:
+          # The release type defines the strategy used to calculate the next version
+          # and generate the changelog. For Next.js, node is a standard fit.
+          release-type: node
