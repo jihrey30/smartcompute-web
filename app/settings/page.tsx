@@ -2,13 +2,15 @@
 
 import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
-import { Settings, Save, Loader2, Paintbrush, Calendar } from "lucide-react";
+import { Settings, Save, Loader2, Paintbrush, Calendar, LogOut } from "lucide-react";
 import { Dropdown } from "@/components/ui/Dropdown";
 import { useUI } from "@/components/ui/UIProvider";
 import { ActionButton } from "@/components/ui/ActionButton";
 import { useTheme } from "next-themes";
+import { useAuth } from "@/components/AuthProvider";
 
 export default function SettingsPage() {
+  const { logout } = useAuth();
   const { buttonStyle, setButtonStyle, currency, setCurrency } = useUI();
   const { theme, setTheme } = useTheme();
   const [localButtonStyle, setLocalButtonStyle] = useState(buttonStyle);
@@ -72,8 +74,8 @@ export default function SettingsPage() {
         </div>
       </header>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
-        <section className="glass-panel p-6 flex flex-col h-full">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-5xl mx-auto">
+        <section className="glass-panel p-6 flex flex-col h-full relative z-20">
           <div className="flex items-center space-x-3 mb-6">
             <div className="p-2 bg-primary/10 text-primary rounded-lg">
               <Calendar className="w-5 h-5" />
@@ -151,7 +153,7 @@ export default function SettingsPage() {
           </div>
         </section>
         
-        <section className="glass-panel p-6 flex flex-col h-full">
+        <section className="glass-panel p-6 flex flex-col h-full relative z-10">
           <div className="flex items-center space-x-3 mb-6">
             <div className="p-2 bg-primary/10 text-primary rounded-lg">
               <Paintbrush className="w-5 h-5" />
@@ -262,6 +264,30 @@ export default function SettingsPage() {
                 />
               </div>
             </div>
+          </div>
+        </section>
+        
+        <section className="glass-panel p-6 flex flex-col h-full relative z-0">
+          <div className="flex items-center space-x-3 mb-6">
+            <div className="p-2 bg-danger/10 text-danger rounded-lg">
+              <LogOut className="w-5 h-5" />
+            </div>
+            <div>
+              <h2 className="text-xl font-semibold text-danger">Account</h2>
+              <p className="text-sm text-foreground/60">Manage your session</p>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <p className="text-sm text-foreground/70">Sign out of your SmartCompute account on this device.</p>
+            <ActionButton 
+              type="button"
+              icon={LogOut} 
+              label="Logout" 
+              variant="danger" 
+              onClick={logout} 
+              className="w-full sm:w-auto"
+            />
           </div>
         </section>
       </div>
