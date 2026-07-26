@@ -74,248 +74,254 @@ export default function SettingsPage() {
         </div>
       </header>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-5xl mx-auto items-start">
-        <section className="glass-panel p-6 flex flex-col relative z-20">
-          <div className="flex items-center space-x-3 mb-6">
-            <div className="p-2 bg-primary/10 text-primary rounded-lg">
-              <Calendar className="w-5 h-5" />
-            </div>
-            <div>
-              <h2 className="text-xl font-semibold">Pay Schedule</h2>
-              <p className="text-sm text-foreground/60">Manage your pay frequency</p>
-            </div>
-          </div>
-
-          <div className="space-y-6 flex-1">
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-foreground/70">Pay Frequency</label>
-              <div className="flex items-center gap-2">
-                <Dropdown 
-                  className="w-full"
-                  value={schedule.frequency}
-                  onChange={(val) => setSchedule({...schedule, frequency: val})}
-                  options={[
-                    { value: "MONTHLY", label: "Monthly" },
-                    { value: "SEMI_MONTHLY", label: "Semi-Monthly (e.g. 15th and 30th)" }
-                  ]}
-                />
+      <div className="flex flex-col lg:flex-row gap-6 max-w-5xl mx-auto items-start">
+        {/* Left Column */}
+        <div className="flex-1 flex flex-col gap-6 w-full">
+          <section className="glass-panel p-6 flex flex-col relative z-20">
+            <div className="flex items-center space-x-3 mb-6">
+              <div className="p-2 bg-primary/10 text-primary rounded-lg">
+                <Calendar className="w-5 h-5" />
+              </div>
+              <div>
+                <h2 className="text-xl font-semibold">Pay Schedule</h2>
+                <p className="text-sm text-foreground/60">Manage your pay frequency</p>
               </div>
             </div>
 
-            {schedule.frequency === "MONTHLY" && (
+            <div className="space-y-6 flex-1">
               <div className="space-y-2">
-                <label className="text-sm font-medium text-foreground/80">Pay Date</label>
+                <label className="text-sm font-medium text-foreground/70">Pay Frequency</label>
                 <div className="flex items-center gap-2">
-                  <input 
-                    type="number" 
-                    min="1" max="31"
-                    value={schedule.payDays?.[0] || 1}
-                    onChange={(e) => setSchedule({...schedule, payDays: [parseInt(e.target.value, 10)]})}
-                    className="w-full bg-background border border-surface-border rounded-md px-3 py-2 focus:outline-none focus:border-primary"
-                  />
-                </div>
-                <p className="text-xs text-foreground/60">Enter the day of the month you get paid.</p>
-              </div>
-            )}
-
-            {schedule.frequency === "SEMI_MONTHLY" && (
-              <div className="space-y-2 flex gap-4">
-                <div className="flex-1 space-y-2">
-                  <label className="text-sm font-medium text-foreground/80">First Pay Date</label>
-                  <div className="flex items-center gap-2">
-                    <input 
-                      type="number" 
-                      min="1" max="31"
-                      value={schedule.payDays?.[0] || 15}
-                      onChange={(e) => setSchedule({...schedule, payDays: [parseInt(e.target.value, 10), schedule.payDays?.[1] || 30]})}
-                      className="w-full bg-background border border-surface-border rounded-md px-3 py-2 focus:outline-none focus:border-primary"
-                    />
-                  </div>
-                </div>
-                <div className="flex-1 space-y-2">
-                  <label className="text-sm font-medium text-foreground/80">Second Pay Date</label>
-                  <div className="flex items-center gap-2">
-                    <input 
-                      type="number" 
-                      min="1" max="31"
-                      value={schedule.payDays?.[1] || 30}
-                      onChange={(e) => setSchedule({...schedule, payDays: [schedule.payDays?.[0] || 15, parseInt(e.target.value, 10)]})}
-                      className="w-full bg-background border border-surface-border rounded-md px-3 py-2 focus:outline-none focus:border-primary"
-                    />
-                  </div>
-                </div>
-              </div>
-            )}
-            
-            <div className="pt-4 mt-auto">
-              <ActionButton 
-                icon={Save} 
-                label={saving ? "Saving..." : "Save Changes"} 
-                variant="primary" 
-                onClick={() => handleSaveField()} 
-                disabled={saving} 
-                className="w-full"
-              />
-            </div>
-          </div>
-        </section>
-        
-        <section className="glass-panel p-6 flex flex-col relative z-10">
-          <div className="flex items-center space-x-3 mb-6">
-            <div className="p-2 bg-primary/10 text-primary rounded-lg">
-              <Paintbrush className="w-5 h-5" />
-            </div>
-            <div>
-              <h2 className="text-xl font-semibold">Appearance</h2>
-              <p className="text-sm text-foreground/60">Customize the UI layout</p>
-            </div>
-          </div>
-
-          <div className="space-y-8 flex-1">
-            
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-foreground/70 flex flex-col">
-                <span>Theme</span>
-                <span className="text-xs font-normal text-foreground/50 mt-0.5">Select light or dark mode</span>
-              </label>
-              <div className="flex items-center gap-2">
-                {mounted && (
                   <Dropdown 
                     className="w-full"
-                    value={theme || "system"}
-                    onChange={setTheme}
+                    value={schedule.frequency}
+                    onChange={(val) => setSchedule({...schedule, frequency: val})}
                     options={[
-                      { value: "light", label: "Light" },
-                      { value: "dark", label: "Dark" },
-                      { value: "system", label: "System Default" },
+                      { value: "MONTHLY", label: "Monthly" },
+                      { value: "SEMI_MONTHLY", label: "Semi-Monthly (e.g. 15th and 30th)" }
                     ]}
                   />
-                )}
+                </div>
               </div>
-            </div>
 
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-foreground/70 flex flex-col">
-                <span>Currency</span>
-                <span className="text-xs font-normal text-foreground/50 mt-0.5">Select your preferred currency for display</span>
-              </label>
-              <div className="flex items-center gap-2">
-                <Dropdown 
+              {schedule.frequency === "MONTHLY" && (
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-foreground/80">Pay Date</label>
+                  <div className="flex items-center gap-2">
+                    <input 
+                      type="number" 
+                      min="1" max="31"
+                      value={schedule.payDays?.[0] || 1}
+                      onChange={(e) => setSchedule({...schedule, payDays: [parseInt(e.target.value, 10)]})}
+                      className="w-full bg-background border border-surface-border rounded-md px-3 py-2 focus:outline-none focus:border-primary"
+                    />
+                  </div>
+                  <p className="text-xs text-foreground/60">Enter the day of the month you get paid.</p>
+                </div>
+              )}
+
+              {schedule.frequency === "SEMI_MONTHLY" && (
+                <div className="space-y-2 flex gap-4">
+                  <div className="flex-1 space-y-2">
+                    <label className="text-sm font-medium text-foreground/80">First Pay Date</label>
+                    <div className="flex items-center gap-2">
+                      <input 
+                        type="number" 
+                        min="1" max="31"
+                        value={schedule.payDays?.[0] || 15}
+                        onChange={(e) => setSchedule({...schedule, payDays: [parseInt(e.target.value, 10), schedule.payDays?.[1] || 30]})}
+                        className="w-full bg-background border border-surface-border rounded-md px-3 py-2 focus:outline-none focus:border-primary"
+                      />
+                    </div>
+                  </div>
+                  <div className="flex-1 space-y-2">
+                    <label className="text-sm font-medium text-foreground/80">Second Pay Date</label>
+                    <div className="flex items-center gap-2">
+                      <input 
+                        type="number" 
+                        min="1" max="31"
+                        value={schedule.payDays?.[1] || 30}
+                        onChange={(e) => setSchedule({...schedule, payDays: [schedule.payDays?.[0] || 15, parseInt(e.target.value, 10)]})}
+                        className="w-full bg-background border border-surface-border rounded-md px-3 py-2 focus:outline-none focus:border-primary"
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+              
+              <div className="pt-4 mt-auto">
+                <ActionButton 
+                  icon={Save} 
+                  label={saving ? "Saving..." : "Save Changes"} 
+                  variant="primary" 
+                  onClick={() => handleSaveField()} 
+                  disabled={saving} 
                   className="w-full"
-                  value={localCurrency}
-                  onChange={setLocalCurrency}
-                  options={[
-                    { value: "PHP", label: "Philippine Peso (₱)" },
-                    { value: "USD", label: "US Dollar ($)" },
-                    { value: "EUR", label: "Euro (€)" },
-                    { value: "GBP", label: "British Pound (£)" },
-                  ]}
                 />
               </div>
             </div>
+          </section>
 
-            <div className="pt-4 mt-auto">
-              <ActionButton 
-                icon={Save} 
-                label="Save Changes" 
-                variant="primary" 
-                onClick={() => setCurrency(localCurrency)} 
-                className="w-full"
-              />
-            </div>
-          </div>
-        </section>
-
-        <section className="glass-panel p-6 flex flex-col relative z-0">
-          <div className="flex items-center space-x-3 mb-6">
-            <div className="p-2 bg-primary/10 text-primary rounded-lg">
-              <MousePointerClick className="w-5 h-5" />
-            </div>
-            <div>
-              <h2 className="text-xl font-semibold">UI Preferences</h2>
-              <p className="text-sm text-foreground/60">Customize your interactions</p>
-            </div>
-          </div>
-
-          <div className="space-y-8 flex-1">
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-foreground/70 flex flex-col">
-                <span>Action Button Style</span>
-                <span className="text-xs font-normal text-foreground/50 mt-0.5">Choose how action buttons are displayed across the app</span>
-              </label>
-              <div className="grid grid-cols-1 gap-3 mt-2">
-                <button 
-                  type="button" 
-                  onClick={() => setLocalButtonStyle("BOTH")} 
-                  className={`p-4 rounded-xl border text-left transition-all ${localButtonStyle === 'BOTH' ? 'border-primary bg-primary/10 ring-1 ring-primary' : 'border-surface-border bg-surface hover:bg-surface-hover hover:border-primary/50'}`}
-                >
-                  <div className="font-medium mb-3">Icon and Text</div>
-                  <div className="flex items-center space-x-2 bg-primary text-white px-3 py-1.5 rounded-md text-sm w-fit">
-                    <Paintbrush className="w-4 h-4" />
-                    <span>Edit</span>
-                  </div>
-                </button>
-                
-                <button 
-                  type="button" 
-                  onClick={() => setLocalButtonStyle("ICON")} 
-                  className={`p-4 rounded-xl border text-left transition-all ${localButtonStyle === 'ICON' ? 'border-primary bg-primary/10 ring-1 ring-primary' : 'border-surface-border bg-surface hover:bg-surface-hover hover:border-primary/50'}`}
-                >
-                  <div className="font-medium mb-3">Icon Only</div>
-                  <div className="flex items-center justify-center bg-primary text-white p-2 rounded-md text-sm w-fit">
-                    <Paintbrush className="w-4 h-4" />
-                  </div>
-                </button>
-
-                <button 
-                  type="button" 
-                  onClick={() => setLocalButtonStyle("TEXT")} 
-                  className={`p-4 rounded-xl border text-left transition-all ${localButtonStyle === 'TEXT' ? 'border-primary bg-primary/10 ring-1 ring-primary' : 'border-surface-border bg-surface hover:bg-surface-hover hover:border-primary/50'}`}
-                >
-                  <div className="font-medium mb-3">Text Only</div>
-                  <div className="flex items-center bg-primary text-white px-4 py-1.5 rounded-md text-sm w-fit">
-                    <span>Edit</span>
-                  </div>
-                </button>
+          <section className="glass-panel p-6 flex flex-col relative z-0">
+            <div className="flex items-center space-x-3 mb-6">
+              <div className="p-2 bg-primary/10 text-primary rounded-lg">
+                <MousePointerClick className="w-5 h-5" />
+              </div>
+              <div>
+                <h2 className="text-xl font-semibold">UI Preferences</h2>
+                <p className="text-sm text-foreground/60">Customize your interactions</p>
               </div>
             </div>
-            
-            <div className="pt-4 mt-auto">
+
+            <div className="space-y-8 flex-1">
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-foreground/70 flex flex-col">
+                  <span>Action Button Style</span>
+                  <span className="text-xs font-normal text-foreground/50 mt-0.5">Choose how action buttons are displayed across the app</span>
+                </label>
+                <div className="grid grid-cols-1 gap-3 mt-2">
+                  <button 
+                    type="button" 
+                    onClick={() => setLocalButtonStyle("BOTH")} 
+                    className={`p-4 rounded-xl border text-left transition-all ${localButtonStyle === 'BOTH' ? 'border-primary bg-primary/10 ring-1 ring-primary' : 'border-surface-border bg-surface hover:bg-surface-hover hover:border-primary/50'}`}
+                  >
+                    <div className="font-medium mb-3">Icon and Text</div>
+                    <div className="flex items-center space-x-2 bg-primary text-white px-3 py-1.5 rounded-md text-sm w-fit">
+                      <Paintbrush className="w-4 h-4" />
+                      <span>Edit</span>
+                    </div>
+                  </button>
+                  
+                  <button 
+                    type="button" 
+                    onClick={() => setLocalButtonStyle("ICON")} 
+                    className={`p-4 rounded-xl border text-left transition-all ${localButtonStyle === 'ICON' ? 'border-primary bg-primary/10 ring-1 ring-primary' : 'border-surface-border bg-surface hover:bg-surface-hover hover:border-primary/50'}`}
+                  >
+                    <div className="font-medium mb-3">Icon Only</div>
+                    <div className="flex items-center justify-center bg-primary text-white p-2 rounded-md text-sm w-fit">
+                      <Paintbrush className="w-4 h-4" />
+                    </div>
+                  </button>
+
+                  <button 
+                    type="button" 
+                    onClick={() => setLocalButtonStyle("TEXT")} 
+                    className={`p-4 rounded-xl border text-left transition-all ${localButtonStyle === 'TEXT' ? 'border-primary bg-primary/10 ring-1 ring-primary' : 'border-surface-border bg-surface hover:bg-surface-hover hover:border-primary/50'}`}
+                  >
+                    <div className="font-medium mb-3">Text Only</div>
+                    <div className="flex items-center bg-primary text-white px-4 py-1.5 rounded-md text-sm w-fit">
+                      <span>Edit</span>
+                    </div>
+                  </button>
+                </div>
+              </div>
+              
+              <div className="pt-4 mt-auto">
+                <ActionButton 
+                  type="button" 
+                  icon={Save} 
+                  label="Save Style" 
+                  variant="primary" 
+                  onClick={() => setButtonStyle(localButtonStyle)}
+                  className="w-full"
+                />
+              </div>
+            </div>
+          </section>
+        </div>
+        
+        {/* Right Column */}
+        <div className="flex-1 flex flex-col gap-6 w-full">
+          <section className="glass-panel p-6 flex flex-col relative z-10">
+            <div className="flex items-center space-x-3 mb-6">
+              <div className="p-2 bg-primary/10 text-primary rounded-lg">
+                <Paintbrush className="w-5 h-5" />
+              </div>
+              <div>
+                <h2 className="text-xl font-semibold">Appearance</h2>
+                <p className="text-sm text-foreground/60">Customize the UI layout</p>
+              </div>
+            </div>
+
+            <div className="space-y-8 flex-1">
+              
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-foreground/70 flex flex-col">
+                  <span>Theme</span>
+                  <span className="text-xs font-normal text-foreground/50 mt-0.5">Select light or dark mode</span>
+                </label>
+                <div className="flex items-center gap-2">
+                  {mounted && (
+                    <Dropdown 
+                      className="w-full"
+                      value={theme || "system"}
+                      onChange={setTheme}
+                      options={[
+                        { value: "light", label: "Light" },
+                        { value: "dark", label: "Dark" },
+                        { value: "system", label: "System Default" },
+                      ]}
+                    />
+                  )}
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-foreground/70 flex flex-col">
+                  <span>Currency</span>
+                  <span className="text-xs font-normal text-foreground/50 mt-0.5">Select your preferred currency for display</span>
+                </label>
+                <div className="flex items-center gap-2">
+                  <Dropdown 
+                    className="w-full"
+                    value={localCurrency}
+                    onChange={setLocalCurrency}
+                    options={[
+                      { value: "PHP", label: "Philippine Peso (₱)" },
+                      { value: "USD", label: "US Dollar ($)" },
+                      { value: "EUR", label: "Euro (€)" },
+                      { value: "GBP", label: "British Pound (£)" },
+                    ]}
+                  />
+                </div>
+              </div>
+
+              <div className="pt-4 mt-auto">
+                <ActionButton 
+                  icon={Save} 
+                  label="Save Changes" 
+                  variant="primary" 
+                  onClick={() => setCurrency(localCurrency)} 
+                  className="w-full"
+                />
+              </div>
+            </div>
+          </section>
+
+          <section className="glass-panel p-6 flex flex-col relative z-0">
+            <div className="flex items-center space-x-3 mb-6">
+              <div className="p-2 bg-danger/10 text-danger rounded-lg">
+                <LogOut className="w-5 h-5" />
+              </div>
+              <div>
+                <h2 className="text-xl font-semibold text-danger">Account</h2>
+                <p className="text-sm text-foreground/60">Manage your session</p>
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <p className="text-sm text-foreground/70">Sign out of your SmartCompute account on this device.</p>
               <ActionButton 
-                type="button" 
-                icon={Save} 
-                label="Save Style" 
-                variant="primary" 
-                onClick={() => setButtonStyle(localButtonStyle)}
-                className="w-full"
+                type="button"
+                icon={LogOut} 
+                label="Logout" 
+                variant="danger" 
+                onClick={logout} 
+                className="w-full sm:w-auto"
               />
             </div>
-          </div>
-        </section>
-        
-        <section className="glass-panel p-6 flex flex-col relative z-0">
-          <div className="flex items-center space-x-3 mb-6">
-            <div className="p-2 bg-danger/10 text-danger rounded-lg">
-              <LogOut className="w-5 h-5" />
-            </div>
-            <div>
-              <h2 className="text-xl font-semibold text-danger">Account</h2>
-              <p className="text-sm text-foreground/60">Manage your session</p>
-            </div>
-          </div>
-
-          <div className="space-y-4">
-            <p className="text-sm text-foreground/70">Sign out of your SmartCompute account on this device.</p>
-            <ActionButton 
-              type="button"
-              icon={LogOut} 
-              label="Logout" 
-              variant="danger" 
-              onClick={logout} 
-              className="w-full sm:w-auto"
-            />
-          </div>
-        </section>
+          </section>
+        </div>
       </div>
     </div>
   );
