@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { api, Category } from "@/lib/api";
 import { Plus, Loader2, Tags, Edit3, Trash2 } from "lucide-react";
 
+import { ActionButton } from "@/components/ui/ActionButton";
+
 export default function CategoriesPage() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
@@ -37,10 +39,12 @@ export default function CategoriesPage() {
           <h1 className="text-3xl font-bold">Categories</h1>
           <p className="text-foreground/60 mt-1">Manage your budget categories and custom colors.</p>
         </div>
-        <button className="flex items-center space-x-2 bg-primary hover:bg-primary-hover text-primary-foreground px-4 py-2 rounded-lg font-medium transition-colors hover-lift">
-          <Plus className="w-4 h-4" />
-          <span>New Category</span>
-        </button>
+        <ActionButton 
+          variant="primary" 
+          icon={Plus} 
+          label="New Category"
+          className="hover-lift"
+        />
       </header>
 
       <section className="glass-panel p-6">

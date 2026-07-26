@@ -13,6 +13,8 @@ export const metadata: Metadata = {
 };
 
 import { LayoutWrapper } from "@/components/LayoutWrapper";
+import { UIProvider } from "@/components/ui/UIProvider";
+import { ThemeProvider } from "@/components/ThemeProvider";
 
 export default function RootLayout({
   children,
@@ -22,12 +24,17 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} h-full antialiased dark`}
+      className={`${inter.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col bg-background text-foreground">
-        <LayoutWrapper>
-          {children}
-        </LayoutWrapper>
+      <body className="min-h-full flex flex-col bg-background text-foreground transition-colors duration-300">
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <UIProvider>
+            <LayoutWrapper>
+              {children}
+            </LayoutWrapper>
+          </UIProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

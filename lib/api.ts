@@ -9,18 +9,29 @@ export interface Category {
   updatedAt: string;
 }
 
+export interface Status {
+  id: string;
+  name: string;
+  color: string;
+  sortOrder: number;
+  slug: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface BudgetItem {
   id: string;
   name: string;
   amount: number;
   type: string;
   isStarred: boolean;
-  status: string;
+  statusId: string | null;
   categoryId: string | null;
   payPeriodId: string;
   createdAt: string;
   updatedAt: string;
   category?: Category;
+  status?: Status;
 }
 
 export interface PayPeriod {
@@ -36,22 +47,23 @@ export interface PayPeriod {
   items?: BudgetItem[];
 }
 
-export interface BudgetItemTemplate {
+export interface Automation {
   id: string;
   name: string;
-  amount: number;
+  defaultAmount: number | string;
   type: string;
   categoryId: string | null;
   userId: string;
   createdAt: string;
   updatedAt: string;
+  recurrence?: string;
   category?: Category;
 }
 
 // Create an Axios instance
 // In production, this would point to the deployed Render backend URL.
 // Since the frontend runs in browser, we can use an environment variable.
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api/';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || '/api/';
 
 export const api = axios.create({
   baseURL: API_URL,

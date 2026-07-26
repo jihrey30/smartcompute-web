@@ -1,27 +1,59 @@
 @import "tailwindcss";
 
 :root {
-  /* Premium Dark Mode Palette */
-  --background: #0f1115; /* Deep, sleek black */
-  --foreground: #f8fafc; /* Crisp white */
+  /* Premium Light Mode Palette */
+  --background: #f8fafc;
+  --foreground: #0f1115;
   
-  --surface: #1e2128; /* Elevated surface */
-  --surface-hover: #2a2d35;
-  --surface-border: #333842;
+  --surface: #ffffff;
+  --surface-hover: #f1f5f9;
+  --surface-border: #e2e8f0;
   
-  --primary: #8b5cf6; /* Vibrant violet */
+  --primary: #8b5cf6;
   --primary-hover: #7c3aed;
   --primary-foreground: #ffffff;
   
-  --secondary: #3b82f6; /* Electric blue */
+  --secondary: #3b82f6;
   --secondary-hover: #2563eb;
   --secondary-foreground: #ffffff;
 
-  --success: #10b981; /* Emerald green */
-  --danger: #ef4444; /* Rose red */
-  --warning: #f59e0b; /* Amber */
+  --success: #10b981;
+  --danger: #ef4444;
+  --warning: #f59e0b;
+  
+  --glass-bg: rgba(255, 255, 255, 0.6);
+  --glass-border: rgba(0, 0, 0, 0.05);
+  --glass-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
+  --lift-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
   
   --radius: 0.75rem;
+}
+
+.dark {
+  /* Premium Dark Mode Palette */
+  --background: #0f1115;
+  --foreground: #f8fafc;
+  
+  --surface: #1e2128;
+  --surface-hover: #2a2d35;
+  --surface-border: #333842;
+  
+  --primary: #8b5cf6;
+  --primary-hover: #7c3aed;
+  --primary-foreground: #ffffff;
+  
+  --secondary: #3b82f6;
+  --secondary-hover: #2563eb;
+  --secondary-foreground: #ffffff;
+
+  --success: #10b981;
+  --danger: #ef4444;
+  --warning: #f59e0b;
+
+  --glass-bg: rgba(30, 33, 40, 0.6);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  --lift-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
 }
 
 @theme inline {
@@ -61,20 +93,29 @@ body {
 
 /* Utilities for Glassmorphism */
 .glass-panel {
-  background: rgba(30, 33, 40, 0.6);
+  background: var(--glass-bg);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--glass-shadow);
 }
 
 /* Micro-animations */
 .hover-lift {
-  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .hover-lift:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--lift-shadow);
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(50%); }
+}
+
+.animate-shimmer {
+  animation: shimmer 2s infinite;
 }
