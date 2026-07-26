@@ -74,8 +74,8 @@ export default function SettingsPage() {
         </div>
       </header>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-5xl mx-auto">
-        <section className="glass-panel p-6 flex flex-col h-full relative z-20">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-5xl mx-auto items-start">
+        <section className="glass-panel p-6 flex flex-col relative z-20">
           <div className="flex items-center space-x-3 mb-6">
             <div className="p-2 bg-primary/10 text-primary rounded-lg">
               <Calendar className="w-5 h-5" />
@@ -99,7 +99,6 @@ export default function SettingsPage() {
                     { value: "SEMI_MONTHLY", label: "Semi-Monthly (e.g. 15th and 30th)" }
                   ]}
                 />
-                <ActionButton icon={Save} label="Save" variant="ghost" onClick={() => handleSaveField()} disabled={saving} />
               </div>
             </div>
 
@@ -114,7 +113,6 @@ export default function SettingsPage() {
                     onChange={(e) => setSchedule({...schedule, payDays: [parseInt(e.target.value, 10)]})}
                     className="w-full bg-background border border-surface-border rounded-md px-3 py-2 focus:outline-none focus:border-primary"
                   />
-                  <ActionButton icon={Save} label="Save" variant="ghost" onClick={() => handleSaveField()} disabled={saving} />
                 </div>
                 <p className="text-xs text-foreground/60">Enter the day of the month you get paid.</p>
               </div>
@@ -132,7 +130,6 @@ export default function SettingsPage() {
                       onChange={(e) => setSchedule({...schedule, payDays: [parseInt(e.target.value, 10), schedule.payDays?.[1] || 30]})}
                       className="w-full bg-background border border-surface-border rounded-md px-3 py-2 focus:outline-none focus:border-primary"
                     />
-                    <ActionButton icon={Save} label="Save" variant="ghost" onClick={() => handleSaveField()} disabled={saving} />
                   </div>
                 </div>
                 <div className="flex-1 space-y-2">
@@ -145,11 +142,21 @@ export default function SettingsPage() {
                       onChange={(e) => setSchedule({...schedule, payDays: [schedule.payDays?.[0] || 15, parseInt(e.target.value, 10)]})}
                       className="w-full bg-background border border-surface-border rounded-md px-3 py-2 focus:outline-none focus:border-primary"
                     />
-                    <ActionButton icon={Save} label="Save" variant="ghost" onClick={() => handleSaveField()} disabled={saving} />
                   </div>
                 </div>
               </div>
             )}
+            
+            <div className="pt-4 mt-auto">
+              <ActionButton 
+                icon={Save} 
+                label={saving ? "Saving..." : "Save Changes"} 
+                variant="primary" 
+                onClick={() => handleSaveField()} 
+                disabled={saving} 
+                className="w-full"
+              />
+            </div>
           </div>
         </section>
         
