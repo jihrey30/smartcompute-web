@@ -18,6 +18,7 @@ export function StatusModal({ isOpen, onClose, onSave, initialData }: Props) {
 
   useEffect(() => {
     if (isOpen) {
+       
       setTimeout(() => {
         setName(initialData?.name || "");
         setSlug(initialData?.slug || "");
@@ -25,6 +26,7 @@ export function StatusModal({ isOpen, onClose, onSave, initialData }: Props) {
         setSortOrder(initialData?.sortOrder?.toString() || "0");
         setIsPending(false);
       }, 0);
+       
     }
   }, [isOpen, initialData]);
 
