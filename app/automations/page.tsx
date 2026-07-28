@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { api, Automation } from "@/lib/api";
-import { Plus, Loader2, Pencil, Trash2, Save, X, CalendarClock, Zap, AlertCircle } from "lucide-react";
-import { cn, formatCurrency } from "@/lib/utils";
+import { Loader2, Pencil, Trash2, Save, X, CalendarClock, Zap, AlertCircle } from "lucide-react";
+import { formatCurrency } from "@/lib/utils";
 import { Dropdown } from "@/components/ui/Dropdown";
 import { useUI } from "@/components/ui/UIProvider";
 import { ActionButton } from "@/components/ui/ActionButton";
@@ -31,8 +31,23 @@ export default function TemplatesPage() {
   }
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    loadItems();
+    async function fetchItems() {
+      try {
+        const [res, schedRes] = await Promise.all([
+          api.get('automations'),
+          api.get('pay-schedule')
+        ]);
+        setItems(res.data);
+        if (schedRes.data) {
+          setSchedule(schedRes.data);
+        }
+      } catch (error) {
+        console.error("Failed to load recurring items", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchItems();
   }, []);
 
   async function handleUpdateItem(id: string, data: Partial<Automation>) {
@@ -244,7 +259,7 @@ function AutomationRow({
       <div className="flex flex-col md:flex-row items-center justify-between p-4 bg-red-500/10 rounded-lg border border-red-500/20 animate-in fade-in">
         <div className="flex items-center space-x-3 text-red-500 mb-4 md:mb-0">
           <AlertCircle className="w-5 h-5" />
-          <span className="font-medium text-sm">Are you sure you want to delete the "{item.name}" automation? It will no longer be applied to future pay periods.</span>
+          <span className="font-medium text-sm">Are you sure you want to delete the &quot;{item.name}&quot; automation? It will no longer be applied to future pay periods.</span>
         </div>
         <div className="flex items-center gap-2">
           <button onClick={() => onDelete(item.id)} className="bg-red-500 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-red-600 transition-colors">Yes, Delete</button>

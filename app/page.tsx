@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { api, PayPeriod, BudgetItem } from "@/lib/api";
-import { DollarSign, PieChart, Wallet, Plus, Loader2, ChevronDown, Check, Pencil, Trash2, Save, X } from "lucide-react";
+import { Wallet, Plus, Loader2 } from "lucide-react";
 import { cn, formatCurrency } from "@/lib/utils";
 import { Dropdown } from "@/components/ui/Dropdown";
 import { useUI } from "@/components/ui/UIProvider";
@@ -11,7 +11,7 @@ import { MilestoneTracker } from "@/components/MilestoneTracker";
 
 export default function Dashboard() {
   const [periods, setPeriods] = useState<PayPeriod[]>([]);
-  const [metrics, setMetrics] = useState<{ periods: any[], streak: number } | null>(null);
+  const [metrics, setMetrics] = useState<{ periods: unknown[], streak: number } | null>(null);
   const [selectedPeriodId, setSelectedPeriodId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -43,8 +43,32 @@ export default function Dashboard() {
   }
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    loadDashboard();
+    async function fetchDashboard() {
+      try {
+        const [periodsRes, metricsRes] = await Promise.all([
+          api.get('pay-periods'),
+          api.get('metrics/dashboard').catch(() => ({ data: null }))
+        ]);
+        if (metricsRes.data) {
+          setMetrics(metricsRes.data);
+        }
+        if (periodsRes.data && periodsRes.data.length > 0) {
+          setPeriods(periodsRes.data);
+          if (!selectedPeriodId || !periodsRes.data.find((p: PayPeriod) => p.id === selectedPeriodId)) {
+            setSelectedPeriodId(periodsRes.data[0].id);
+          }
+        } else {
+          setPeriods([]);
+          setSelectedPeriodId(null);
+        }
+      } catch (error) {
+        console.error("Failed to load dashboard data", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchDashboard();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const payPeriod = periods.find(p => p.id === selectedPeriodId) || null;
@@ -88,14 +112,6 @@ export default function Dashboard() {
       </div>
     );
   }
-
-  const displayData = payPeriod || {
-    totalIncome: 0,
-    totalAllocated: 0,
-    items: [] as BudgetItem[],
-  };
-
-  const remaining = displayData.totalIncome - displayData.totalAllocated;
 
   return (
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -163,21 +179,5 @@ export default function Dashboard() {
   );
 }
 
-function SummaryCard({ title, amount, icon, trend, highlight = false }: { title: string, amount: number, icon: React.ReactNode, trend: string, highlight?: boolean }) {
-  const { currency } = useUI();
-  return (
-    <div className={cn("glass-panel p-6 flex flex-col justify-between hover-lift relative overflow-hidden", highlight && "border-danger/50")}>
-      {highlight && <div className="absolute top-0 right-0 w-16 h-16 bg-danger/10 blur-2xl rounded-full" />}
-      <div className="flex justify-between items-start mb-4">
-        <h3 className="text-foreground/70 font-medium">{title}</h3>
-        <div className="p-2 bg-surface-hover rounded-lg">{icon}</div>
-      </div>
-      <div>
-        <div className="text-3xl font-bold tracking-tight">{formatCurrency(amount, currency)}</div>
-        <p className={cn("text-sm mt-1", highlight ? "text-danger" : "text-foreground/50")}>{trend}</p>
-      </div>
-    </div>
-  );
-}
 
 
