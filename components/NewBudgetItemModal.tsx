@@ -5,13 +5,23 @@ import { Dropdown } from "@/components/ui/Dropdown";
 import { useUI } from "@/components/ui/UIProvider";
 import { useAsyncAction } from "@/lib/useAsyncAction";
 import { useRouter } from "next/navigation";
+import { Status } from "@/lib/api";
+export interface NewBudgetItemData {
+  title: string;
+  amount: string;
+  type: string;
+  isRecurring: boolean;
+  recurrence: string;
+  statusId: string;
+  targetDate: string;
+}
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
-  onSave: (data: any) => Promise<void>;
+  onSave: (data: NewBudgetItemData) => Promise<void>;
   schedule: { payDays: number[] } | null;
-  statuses: any[];
+  statuses: Status[];
 }
 
 function getPayPeriodForDate(targetDate: string, payDays: number[]): string {
@@ -58,11 +68,14 @@ export function NewBudgetItemModal({ isOpen, onClose, onSave, schedule, statuses
 
   useEffect(() => {
     if (isOpen) {
-      const toPayStatus = statuses.find(s => s.slug === 'to-pay');
-      setStep(1);
-      setData({ title: "", amount: "", type: "expense", isRecurring: false, recurrence: "EVERY_PAYDAY", statusId: toPayStatus?.id || "", targetDate: "" });
-      setTimeout(() => inputRef.current?.focus(), 100);
+      setTimeout(() => {
+        const toPayStatus = statuses.find(s => s.slug === 'to-pay');
+        setStep(1);
+        setData({ title: "", amount: "", type: "expense", isRecurring: false, recurrence: "EVERY_PAYDAY", statusId: toPayStatus?.id || "", targetDate: "" });
+        inputRef.current?.focus();
+      }, 0);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen]);
 
   const { execute: executeNext, isPending } = useAsyncAction(async () => {

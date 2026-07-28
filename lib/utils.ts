@@ -23,7 +23,7 @@ export function getPayPeriodDate(targetDate: string, payDays: number[]): Date | 
   if (!targetDate || !payDays || payDays.length === 0) return null;
   const [year, month, day] = targetDate.split('-').map(Number);
   const sortedDays = [...payDays].sort((a, b) => a - b);
-  let y = year, m = month - 1, d = day;
+  const y = year, m = month - 1, d = day;
   
   let pDate = null;
   for (let i = sortedDays.length - 1; i >= 0; i--) {

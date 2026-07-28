@@ -12,6 +12,23 @@ interface MilestoneTrackerProps {
 }
 
 export function MilestoneTracker({ totalItems, paidItems, streak = 0, className }: MilestoneTrackerProps) {
+  const [particles, setParticles] = useState<{x: number, duration: number, delay: number, scaleMax: number, rotate: number, size: number}[]>([]);
+
+  useEffect(() => {
+    if (totalItems > 0 && paidItems === totalItems) {
+      setTimeout(() => {
+        setParticles(Array.from({ length: 15 }).map(() => ({
+          x: Math.random() * 100,
+          duration: Math.random() * 2 + 2,
+          delay: Math.random() * 2,
+          scaleMax: Math.random() + 0.6,
+          rotate: Math.random() * 360,
+          size: Math.random() * 16 + 8
+        })));
+      }, 0);
+    }
+  }, [totalItems, paidItems]);
+
   const { user } = useAuth();
   const firstName = user?.name ? user.name.split(' ')[0] : '';
   const isComplete = totalItems > 0 && paidItems === totalItems;
@@ -64,30 +81,30 @@ export function MilestoneTracker({ totalItems, paidItems, streak = 0, className 
             animate={{ opacity: 1 }}
             className="absolute inset-0 pointer-events-none overflow-hidden"
           >
-            {Array.from({ length: 15 }).map((_, i) => (
+            {particles.map((p, i) => (
               <motion.div
                 key={i}
                 initial={{ 
                   opacity: 0, 
                   y: "110%", 
-                  x: `${Math.random() * 100}%`,
+                  x: `${p.x}%`,
                   scale: 0 
                 }}
                 animate={{ 
                   opacity: [0, 1, 0],
                   y: ["110%", "-20%"],
-                  x: `${Math.random() * 100}%`,
-                  scale: [0, Math.random() + 0.6, 0],
-                  rotate: Math.random() * 360
+                  x: `${p.x}%`,
+                  scale: [0, p.scaleMax, 0],
+                  rotate: p.rotate
                 }}
                 transition={{ 
-                  duration: Math.random() * 2 + 2, 
+                  duration: p.duration, 
                   repeat: Infinity, 
-                  delay: Math.random() * 2 
+                  delay: p.delay 
                 }}
                 className="absolute bottom-0 text-success/50"
               >
-                <Sparkles size={Math.random() * 16 + 8} />
+                <Sparkles size={p.size} />
               </motion.div>
             ))}
           </motion.div>

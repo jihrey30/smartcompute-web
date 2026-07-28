@@ -1,17 +1,17 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { api, PayPeriod, BudgetItem } from "@/lib/api";
+import { api, PayPeriod } from "@/lib/api";
 import { Wallet, Plus, Loader2 } from "lucide-react";
-import { cn, formatCurrency } from "@/lib/utils";
 import { Dropdown } from "@/components/ui/Dropdown";
-import { useUI } from "@/components/ui/UIProvider";
 import { ActionButton } from "@/components/ui/ActionButton";
 import { MilestoneTracker } from "@/components/MilestoneTracker";
 
+interface MetricPeriod { id: string; totalItems: number; paidItems: number; }
+
 export default function Dashboard() {
   const [periods, setPeriods] = useState<PayPeriod[]>([]);
-  const [metrics, setMetrics] = useState<{ periods: unknown[], streak: number } | null>(null);
+  const [metrics, setMetrics] = useState<{ periods: MetricPeriod[], streak: number } | null>(null);
   const [selectedPeriodId, setSelectedPeriodId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -71,7 +71,6 @@ export default function Dashboard() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const payPeriod = periods.find(p => p.id === selectedPeriodId) || null;
 
 
 
@@ -169,8 +168,8 @@ export default function Dashboard() {
       {metrics && metrics.periods && metrics.periods.find(p => p.id === selectedPeriodId) && (
         <div className="mt-8 mb-4">
           <MilestoneTracker 
-            totalItems={metrics.periods.find(p => p.id === selectedPeriodId).totalItems}
-            paidItems={metrics.periods.find(p => p.id === selectedPeriodId).paidItems}
+            totalItems={metrics.periods.find(p => p.id === selectedPeriodId)?.totalItems || 0}
+            paidItems={metrics.periods.find(p => p.id === selectedPeriodId)?.paidItems || 0}
             streak={metrics.streak}
           />
         </div>

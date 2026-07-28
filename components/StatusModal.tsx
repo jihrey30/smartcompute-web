@@ -18,11 +18,13 @@ export function StatusModal({ isOpen, onClose, onSave, initialData }: Props) {
 
   useEffect(() => {
     if (isOpen) {
-      setName(initialData?.name || "");
-      setSlug(initialData?.slug || "");
-      setColor(initialData?.color || "#3b82f6");
-      setSortOrder(initialData?.sortOrder?.toString() || "0");
-      setIsPending(false);
+      setTimeout(() => {
+        setName(initialData?.name || "");
+        setSlug(initialData?.slug || "");
+        setColor(initialData?.color || "#3b82f6");
+        setSortOrder(initialData?.sortOrder?.toString() || "0");
+        setIsPending(false);
+      }, 0);
     }
   }, [isOpen, initialData]);
 

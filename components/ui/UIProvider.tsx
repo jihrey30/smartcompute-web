@@ -33,7 +33,7 @@ export function UIProvider({ children }: { children: React.ReactNode }) {
           if (res.data.buttonStyle) setButtonStyle(res.data.buttonStyle as ButtonStyle);
           if (res.data.currency) setCurrencyState(res.data.currency);
         }
-      } catch (e) {
+      } catch {
         // fail silently for unauthenticated
       }
     }
